@@ -141,9 +141,13 @@ end
 #Index
 ['/', '/books'].each do |path|
 	get path do
-		@books = Book.all(:dewey_class_number.not => nil, :order => [:dewey_class_number.asc, :author1_last.asc, :author1_first.asc, :title.asc])
-		flash.now[:alert] = "Go to <a href='/settings'>Settings</a> to configure this app." if Settings.count == 0
-		haml :index
+		if Book.count > 0
+			@books = Book.all(:dewey_class_number.not => nil, :order => [:dewey_class_number.asc, :author1_last.asc, :author1_first.asc, :title.asc])
+			haml :index
+		else
+			flash.now[:alert] = "Go to <a href='/settings'>Settings</a> to configure Pilcrow. Or just start adding books."
+			haml :welcome
+		end
 	end
 end
 

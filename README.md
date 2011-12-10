@@ -10,6 +10,7 @@ In Terminal (on OS X):
 
 	git clone git://github.com/cproctor/pilcrow.git
 	cd pilcrow
+	sudo gem install bundler
 	bundle install
 	ruby ./pilcrow
 
