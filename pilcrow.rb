@@ -287,7 +287,7 @@ post '/settings' do
 		end
 	end
 	flash[:alert] = "Updated settings: #{updated.join(', ')}"	
-	redirect '/settings'
+	redirect '/'
 end
 	
 
