@@ -73,7 +73,7 @@ class DeweyClass
 	end
 end
 
-DataMapper.auto_upgrade!
+DataMapper.auto_upgrade! 
 
 require './seeds.rb' unless DeweyClass.any?
 
