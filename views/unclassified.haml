@@ -7,7 +7,7 @@
 				%input{:type => 'text', :name => 'isbn', :id => 'isbn'}
 				%input{:type => 'submit', :class => 'btn', :value => "Lookup"}
 .row
-	.span12
+	.span16
 		%table
 			%thead
 				%tr
@@ -19,3 +19,7 @@
 						%td
 							%a{:href => "/books/#{book.id}/edit"}=book.title
 						%td=book.all_authors
+.row
+	.span2.offset12
+		%a{:href => "http://www.google.com"}
+			%img{:src=>"http://books.google.com/googlebooks/images/poweredby.png", :border => "0", :style => "border: 0"}

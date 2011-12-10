@@ -82,7 +82,7 @@ use Rack::Flash
 
 helpers do
 	def get_book_data(isbn)
-		uri = URI.parse("https://www.googleapis.com/books/v1/volumes?q=isbn:#{isbn}&projection=lite")
+		uri = URI.parse("https://www.googleapis.com/books/v1/volumes?q=isbn:#{isbn}&projection=lite&key=AIzaSyAj7QKuhc_XU3Yjh2toDOx3Zo3xWCl2YWo")
 		request = Net::HTTP::Get.new(uri.request_uri)
 		socket = Net::HTTP.new(uri.host, uri.port)
 		socket.use_ssl = true
