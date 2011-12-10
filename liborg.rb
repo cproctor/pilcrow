@@ -151,7 +151,7 @@ post '/books' do
 												:small_img_url 	=>	this_book['imageLinks']['smallThumbnail']
 											})
 		rescue => e
-			flash[:alert] = "Sorry, something went wrong: #{e.backtrace}"
+			flash[:alert] = "Sorry, something went wrong: #{e}<br><br>Bookdata: #{book_data}"
 			redirect 'books/new'
 		end
 		if @book.save
