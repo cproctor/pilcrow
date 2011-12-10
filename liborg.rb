@@ -9,11 +9,13 @@ require 'rack-flash'
 
 require 'haml'
 require 'sass'
+require "sinatra/authorization"
 
 require 'openssl'
 require 'net/http'
 require 'uri'
 require 'csv'
+
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
 #If on Heroku, uses Heroku database. 
@@ -75,6 +77,7 @@ require './seeds.rb' unless DeweyClass.any?
 
 enable :sessions
 use Rack::Flash
+set :authorization_realm, "Private area"
 
 helpers do
 	def get_book_data(isbn)
@@ -104,16 +107,21 @@ helpers do
 			return "#{$1}-01-01"
 		end
 	end
+	
+	def authorize(login, password)
+	  login == "chris" && password == "books"
+	end
 end
 
 #Index
 ['/', '/books'].each do |path|
 	get path do
-		@books = Book.all(:dewey_class_number.not => nil, :order => [:dewey_class_number.asc])
+		@books = Book.all(:dewey_class_number.not => nil, :order => [:dewey_class_number.asc, :author1_last.asc, :author1_first.asc, :title.asc])
 		haml :index
 	end
 end
 
+#Index-unclassified
 get '/books/unclassified' do
 	@books = Book.all(:dewey_class_number => nil)
 	haml :unclassified
@@ -121,6 +129,7 @@ end
 
 #New
 get '/books/new' do
+	login_required
 	haml :new
 end
 
@@ -132,6 +141,7 @@ end
 
 #Create
 post '/books' do
+	login_required
 	if temp = Book.first(:isbn => params[:isbn])
 		flash[:alert] = "<strong>#{temp.title}</strong> is already in the library."
 		redirect '/books/new'
@@ -176,6 +186,7 @@ end
 
 #Edit
 get '/books/:id/edit' do
+	login_required
 	@book = Book.get!(params[:id])
 	@dewey100		= DeweyClass.all(:granularity => 100)
 	@dewey10	 	= DeweyClass.all(:granularity => [100, 10])
@@ -185,6 +196,7 @@ end
 
 #Update
 put '/books/:id' do
+	login_required
 	book = Book.get!(params[:id])
 	book.dewey_class_number = params[:dewey1] || params[:dewey10] || params[:dewey100]
 	book.save
@@ -193,6 +205,7 @@ end
 
 #Delete
 get '/books/:id/delete' do
+	login_required
 	book = Book.get!(params[:id])
 	book.destroy
 	redirect Book.count(:dewey_class_number => nil) == 0 ? "/books" : "/books/unclassified"

@@ -10,3 +10,5 @@ gem 'rack-flash'
 
 gem 'haml'
 gem 'sass'
+
+gem "sinatra-authorization"
