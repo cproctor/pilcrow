@@ -30,7 +30,7 @@ class Book
 	property		:author1_last,		String	
 	property		:all_authors,			Text
 	property		:subtitle, 		 		Text
-	property		:publisher, 	 		String
+	property		:publisher, 	 		Text
 	property		:pub_date,		 		Date
 	property		:img_url, 		 		Text
 	property		:small_img_url,		Text
