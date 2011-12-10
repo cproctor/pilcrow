@@ -14,7 +14,6 @@ require 'openssl'
 require 'net/http'
 require 'uri'
 require 'csv'
-
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
 #If on Heroku, uses Heroku database. 
@@ -83,6 +82,12 @@ helpers do
 		request = Net::HTTP::Get.new(uri.request_uri)
 		socket = Net::HTTP.new(uri.host, uri.port)
 		socket.use_ssl = true
+		
+		#Only on Heroku
+		socket.verify_mode = OpenSSL::SSL::VERIFY_PEER 
+		socket.ca_file = '/usr/lib/ssl/certs/ca-certificates.crt'
+		#----
+		
 		store = OpenSSL::X509::Store.new
 		store.add_cert OpenSSL::X509::Certificate.new(File.new('certs/googleapis.pem'))
 		socket.cert_store = store
