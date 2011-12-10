@@ -15,6 +15,8 @@ require 'net/http'
 require 'uri'
 require 'csv'
 
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+
 #If on Heroku, uses Heroku database. 
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/development.db")
 
