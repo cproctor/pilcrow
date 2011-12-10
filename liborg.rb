@@ -47,7 +47,7 @@ class Book
 		return nil unless dewey_class_number
 		dewey_class_number / 10 * 10
 	end
-end 
+end
 
 class DeweyClass
 	include DataMapper::Resource 
