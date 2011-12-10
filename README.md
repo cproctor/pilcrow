@@ -7,12 +7,14 @@ Installation
 ------------
 
 In Terminal (on OS X):
+
 	git checkout https://github.com/cproctor/Pilcrow.git
 	cd pilcrow
 	bundle install
 	ruby ./pilcrow
 
 In your web browser:
+
 	localhost:4567
 	
 Now you're ready to [deploy to Heroku](http://devcenter.heroku.com/articles/quickstart) if you want a site everyone can see.
