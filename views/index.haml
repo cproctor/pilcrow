@@ -1,7 +1,11 @@
 .page-header
 	.row
-		.span12
+		.span10
 			%h1 My library
+		.span6
+			%form{:action => '/lookup', :method => "GET"}
+				%input{:type => 'text', :name => 'isbn', :id => 'isbn'}
+				%input{:type => 'submit', :class => 'btn', :value => "Lookup"}
 .row
 	.span16
 		%table

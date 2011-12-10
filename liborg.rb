@@ -146,6 +146,15 @@ get '/books/:id' do
 	haml :show
 end
 
+get '/lookup' do
+	if @book = Book.first(:isbn => params[:isbn])
+		redirect "/books/#{@book.id}"
+	else
+		flash[:alert] = "No book in the library has ISBN #{params[:isbn]}"
+		redirect "/"
+	end
+end
+
 #Create
 post '/books' do
 	login_required
