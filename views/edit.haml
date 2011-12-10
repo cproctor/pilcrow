@@ -1,0 +1,56 @@
+.section#edit
+	.page-header
+		%h1 
+			=@book.title
+			%small= @book.subtitle
+	.row
+		.span10
+			.row
+				.span10
+					%h2 Classify this book
+			.row
+				.span2
+					-if @book.small_img_url
+						%img{:src => @book.small_img_url}
+				.span8
+					.row
+						.span1 By
+						.span5=@book.all_authors
+					.row
+						.span1 Published
+						.span5="#{@book.pub_date.strftime("%B %Y")} by #{@book.publisher}"
+					-if @book.dewey_class
+						.row
+							.span1 Category
+							.span5=@book.dewey_class.full_description
+		.span4
+			%form{:action => '/books', :method => 'POST'}
+				%h2 Or add another
+				%input{:type => 'text', :name => 'isbn', :id => 'isbn', :tabindex => "1", :class => "span2"}
+				%input{:type => 'submit', :value => 'Add', :class => "btn"}
+	.row
+		.span15
+			%form{:action => "/books/#{@book.id}", :method => 'POST'}
+				%input{:name => '_method', :type => 'hidden', :value => 'put'}
+				.clearfix
+					
+				.row
+					.span5
+						%select{:name => "dewey100", :id => "dewey100", :size => '10', :class => "span5"}
+							-@dewey100.each do |d|
+								-sel = @book.dewey100 == d.number ? {:selected => 'selected'} : {}
+								%option{{:value => d.number}.merge(sel)}="#{d.number} #{d.description}"
+					.span5
+						%select{:name => "dewey10", :id => "dewey10", :size => '10', :class => "span5"}
+							-@dewey10.each do |d|
+								-sel = @book.dewey10 == d.number ? {:selected => 'selected'} : {}
+								%option{{:value => d.number}.merge(sel)}="#{d.number} #{d.description}"
+					.span5
+						%select{:name => "dewey1", :id => "dewey1", :size => '10', :class => "span5"}
+							-@dewey1.each do |d|
+								-sel = @book.dewey_class_number == d.number ? {:selected => 'selected'} : {}
+								%option{{:value => d.number}.merge(sel)}="#{d.number} #{d.description}"
+				.row
+					.span4.offset2
+						%input{:type => 'submit', :value => 'Save', :class => "btn primary"}
+						%a{:href => "/books/#{@book.id}/delete", :class => "btn danger"} Delete

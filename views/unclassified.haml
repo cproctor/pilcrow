@@ -1,0 +1,17 @@
+.page-header
+	.row
+		.span12
+			%h1 Unclassified Books
+.row
+	.span12
+		%table
+			%thead
+				%tr
+					%th Title
+					%th	Author
+			%tbody
+				-@books.each do |book|
+					%tr
+						%td
+							%a{:href => "/books/#{book.id}/edit"}=book.title
+						%td=book.all_authors

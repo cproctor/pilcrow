@@ -1,0 +1,20 @@
+.page-header
+	.row
+		.span12
+			%h1 My library
+.row
+	.span16
+		%table
+			%thead
+				%tr
+					%th Class
+					%th Title
+					%th	Author
+			%tbody
+				-@books.each do |book|
+					%tr
+						%td="#{book.dewey_class.number} #{book.dewey_class.top_level_description}"
+						%td
+							%a{:href => "/books/#{book.id}"}=book.title
+						%td=book.all_authors
+			

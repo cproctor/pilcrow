@@ -1,0 +1,26 @@
+.section#form
+	.page-header
+		%h1 
+			=@book.title
+			%small= @book.subtitle
+	.row
+		.span4
+			-if @book.img_url
+				%img{:src => @book.img_url}
+		.span8
+			.row
+				.span2 By
+				.span6=@book.all_authors
+			.row
+				.span2 Published
+				.span6="#{@book.pub_date.strftime("%B %Y")} by #{@book.publisher}"
+			.row
+				-if @book.dewey_class
+					.span2 Classified as
+					.span6=@book.dewey_class.full_description
+				-else
+					.span2 Unclassified
+		.span4
+			%a{:href => "/books/#{@book.id}/edit", :class => "btn primary"} Edit
+			
+			

@@ -1,0 +1,17 @@
+.section#form
+	.page-header
+		%h1 Add a book
+	.row
+		%form{:action => '/books', :method => 'POST'}
+			%fieldset
+				.clearfix
+					%label{:for => 'isbn'} ISBN
+					.input
+						.row
+							.span8
+								%input{:type => 'text', :name => 'isbn', :id => 'isbn', :tabindex => "1"}
+							.span2
+								%a{:href => "http://www.google.com"}
+									%img{:src=>"http://books.google.com/googlebooks/images/poweredby.png", :border => "0", :style => "border: 0"}
+				.actions
+					%input{:type => 'submit', :value => 'Add', :class => "btn primary"}
