@@ -1,0 +1,29 @@
+.section#settings
+	.page-header
+		%h1 Settings
+	.row
+		%form{:action => '/settings', :method => 'POST'}
+			%fieldset
+				.clearfix
+					%label{:for => 'username'} Username
+					.input
+						.row
+							.span8
+								%input{:type => 'text', :name => 'username', :id => 'username', :value => Settings.value_of('username'), :class => "span6"}
+				.clearfix
+					%label{:for => 'password'} Password
+					.input
+						.row
+							.span8
+								%input{:type => 'text', :name => 'password', :id => 'password', :value => Settings.value_of('password'), :class => "span6"}
+				.clearfix
+					%label{:for => 'api_key'} 
+						%a{:href => "https://code.google.com/apis/console"} API key
+						
+					.input
+						.row
+							.span8
+								%input{:type => 'text', :name => 'api_key', :id => 'api_key', :value => Settings.value_of('api_key'), :class => "span6"}
+								%span.span6.help-block This app uses the Google Books API to look up your books. You don't need an API key, but you'll be cut off after a while if you don't have one. 
+				.actions
+					%input{:type => 'submit', :value => 'Save', :class => "btn primary"}
