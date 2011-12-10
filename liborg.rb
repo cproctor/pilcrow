@@ -77,7 +77,6 @@ require './seeds.rb' unless DeweyClass.any?
 
 enable :sessions
 use Rack::Flash
-set :authorization_realm, "Private area"
 
 helpers do
 	def get_book_data(isbn)
@@ -106,6 +105,12 @@ helpers do
 		elsif date =~ /(\d{4})/
 			return "#{$1}-01-01"
 		end
+	end
+	
+	include Sinatra::Authorization
+	
+	def authorization_realm
+		"pilcrow"
 	end
 	
 	def authorize(login, password)
