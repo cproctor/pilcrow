@@ -8,7 +8,7 @@ Installation
 
 In Terminal (on OS X):
 
-	git checkout git://github.com/cproctor/Pilcrow.git
+	git clone git://github.com/cproctor/pilcrow.git
 	cd pilcrow
 	bundle install
 	ruby ./pilcrow
