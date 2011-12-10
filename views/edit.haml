@@ -51,6 +51,12 @@
 								-sel = @book.dewey_class_number == d.number ? {:selected => 'selected'} : {}
 								%option{{:value => d.number}.merge(sel)}="#{d.number} #{d.description}"
 				.row
-					.span4.offset2
-						%input{:type => 'submit', :value => 'Save', :class => "btn primary"}
-						%a{:href => "/books/#{@book.id}/delete", :class => "btn danger"} Delete
+					.actions.span16
+						.row
+							.span12
+								%input{:type => 'submit', :value => 'Save', :class => "btn primary"}
+								%a{:href => "/books/#{@book.id}/delete", :class => "btn danger"} Delete
+							.span4
+								%a{:href => "http://www.google.com"}
+									%img{:src=>"http://books.google.com/googlebooks/images/poweredby.png", :border => "0", :style => "border: 0"}
+								

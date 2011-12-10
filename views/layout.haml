@@ -1,7 +1,7 @@
 !!!
 %html
 	%head
-		%title My Library
+		%title Pilcrow
 		%script{:src => "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" }
 		%script{:src => "/app.js"}
 		%link{:rel => "stylesheet", :href => "http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css"}
@@ -10,15 +10,21 @@
 		.topbar
 			.topbar-inner
 				.container
-					%a{:href => "/", :class => "brand"} My Library
+					%a{:href => "https://github.com/cproctor/pilcrow", :class => "brand"} Pilcrow
 					%ul
 						%li
-							%a{:href => "/books/new"} Add books
+							%a{:href => "/"} My library
 						-if Book.count(:dewey_class_number => nil) != 0
 							%li
 								%a{:href => "/books/unclassified"} Unclassified books
+						%li
+							%a{:href => "/books/new"} Add books
+					%ul.right
+						%li 
+							%a{:href => "/settings"} Settings
 		.container
 			-if flash[:alert]
 				.row
 					.alert-message=flash[:alert]
-			=yield
+			.row
+				=yield
