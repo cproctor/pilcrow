@@ -34,6 +34,8 @@ class Book
 	property		:pub_date,		 		Date
 	property		:img_url, 		 		Text
 	property		:small_img_url,		Text
+	property		:preview_link,		Text
+	property 		:page_count, 			Integer
 	belongs_to 	:dewey_class, 		:required => false
 	
 	def dewey100
@@ -154,16 +156,31 @@ post '/books' do
 		begin
 			book_data = get_book_data(params[:isbn])
 			this_book = book_data['items'][0]['volumeInfo']
+			if this_book['authors']
+				author1_first = this_book['authors'][0].split(" ")[0..-2].join(" ")
+				author1_last = this_book['authors'][0].split(" ")[-1]
+				all_authors = this_book['authors'].join(', ')
+			else
+				author1_first = author1_last = ""
+			end
+			if this_book['imageLinks']
+				img_url = this_book['imageLinks']['thumbnail']
+				small_img_url = this_book['imageLinks']['smallThumbnail']
+			else
+				img_url = small_img_url = ""
+			end
 			@book = Book.new({ :isbn 					=> 	params[:isbn],
 												:title 					=> 	this_book['title'],
 												:subtitle 			=> 	this_book['subtitle'],
-												:author1_first	=>	this_book['authors'][0].split(" ")[0..-2].join(" "),
-												:author1_last		=> 	this_book['authors'][0].split(" ")[-1],
-												:all_authors		=> 	this_book['authors'].join(', '),
+												:author1_first	=>	author1_first,
+												:author1_last		=> 	author1_last,
+												:all_authors		=> 	all_authors,
 												:publisher			=> 	this_book['publisher'],
 												:pub_date				=> 	clean_up_date(this_book['publishedDate']),
-												:img_url				=> 	this_book['imageLinks']['thumbnail'],
-												:small_img_url 	=>	this_book['imageLinks']['smallThumbnail']
+												:img_url				=> 	img_url,
+												:small_img_url 	=>	small_img_url,
+												:preview_link 	=> 	this_book['previewLink'], 
+												:page_count			=>	this_book['pageCount']
 											})
 		rescue => e
 			flash[:alert] = "Sorry, something went wrong: #{e}<br><br>Bookdata: #{book_data}"
@@ -172,18 +189,7 @@ post '/books' do
 		if @book.save
 			redirect "/books/#{@book.id}/edit"
 		else
-			flash[:alert]= "<h1>Trouble</h1> Tried to create the following book:<ul>" +
-				"<li> ISBN: #{params[:isbn]} </li>" + 
-				"<li> Title: #{this_book['title']} </li>" + 
-				"<li> Subtitle: #{this_book['subtitle']} </li>" + 
-				"<li> First Author First: #{this_book['authors'][0].split(" ")[0..-2].join(" ")} </li>" +
-				"<li> First Author Last: #{this_book['athors'][0].split(" ")[-1]} </li>" +
-				"<li> All authors: #{this_book['authors'].join(', ')} </li>" +
-				"<li> Author: #{this_book['authors'].join(', ')} </li>" + 
-				"<li> Publisher: #{this_book['publisher']} </li>" + 
-				"<li> Pub Date: #{this_book['publishedDate']} </li>" + 
-				"</ul> " + 
-				"The following errors were reported: #{@book.errors.values.flatten.join(", ")}"
+			flash[:alert]= "The following errors were reported: #{@book.errors.values.flatten.join(", ")}"
 			redirect 'books/new'
 		end
 	end
@@ -206,6 +212,20 @@ put '/books/:id' do
 	book.dewey_class_number = params[:dewey1] || params[:dewey10] || params[:dewey100]
 	book.save
 	redirect Book.count(:dewey_class_number => nil) == 0 ? "/books/#{params[:id]}" : "/books/unclassified"
+end
+
+#upgrade!!!
+get '/upgrade' do
+	login_required
+	Book.all.each do |book|
+		book_data = get_book_data(book.isbn)
+		this_book = book_data['items'][0]['volumeInfo']
+		book.preview_link = this_book['previewLink']
+		book.page_count	= this_book['pageCount']
+		book.save
+	end
+	flash[:alert] = "Upgraded."
+	redirect '/'
 end
 
 #Delete

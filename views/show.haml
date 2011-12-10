@@ -14,12 +14,21 @@
 			.row
 				.span2 Published
 				.span6="#{@book.pub_date.strftime("%B %Y")} by #{@book.publisher}"
+			-if @book.page_count
+				.row
+					.span2 Pages
+					.span6=@book.page_count
 			.row
 				-if @book.dewey_class
 					.span2 Classified as
 					.span6=@book.dewey_class.full_description
 				-else
 					.span2 Unclassified
+			-if @book.preview_link
+				.row
+					.span6.offset2
+						%a{:href => @book.preview_link} Preview 
+						with Google Books
 		.span4
 			%a{:href => "/books/#{@book.id}/edit", :class => "btn primary"} Edit
 			
